@@ -44,11 +44,7 @@ namespace Proyecto.Services
             var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}Usuarios/login", usuario);
             if (response.IsSuccessStatusCode)
             {
-                var message = await response.Content.ReadAsStringAsync();
-                if (message == "Inicio de sesión exitoso")
-                    return true;
-                else
-                    throw new Exception(message);
+                return true;
             }
             else
             {

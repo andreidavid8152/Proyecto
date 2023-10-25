@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Proyecto.Models;
 using Proyecto.Services;
 
@@ -79,6 +81,19 @@ namespace Proyecto.Controllers
             }
             return View(model); // Si el modelo no es válido, simplemente retorna a la vista con los datos del formulario.
         }
+
+        public IActionResult MiPerfil()
+        {
+            // Aquí puedes recuperar la información del perfil del usuario logueado y enviarla a la vista
+            return View();
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            return RedirectToAction("Index", "Home");  // Redirige al usuario a la página principal después de cerrar sesión.
+        }
+
+
 
     }
 }
