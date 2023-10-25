@@ -30,11 +30,13 @@ namespace Proyecto.Controllers
             {
                 try
                 {
-                    var isSuccessful = await _apiService.login(model);
-                    if (isSuccessful)
+                    var token = await _apiService.Login(model);
+                    if (!string.IsNullOrEmpty(token))
                     {
-                        // Supongamos que redireccionas a otra vista o dashboard después de un inicio de sesión exitoso
-                        return RedirectToAction("Dashboard", "Home");
+                        // Almacena el token en la sesión o en una cookie
+                        HttpContext.Session.SetString("UserToken", token);
+
+                        return RedirectToAction("MiPerfil");
                     }
                     else
                     {
@@ -63,7 +65,7 @@ namespace Proyecto.Controllers
             {
                 try
                 {
-                    var result = await _apiService.registro(model);
+                    var result = await _apiService.Registro(model);
                     if (result)
                     {
                         return RedirectToAction("Login", "Auth"); // Redirige al inicio de sesión después de un registro exitoso.
@@ -82,18 +84,27 @@ namespace Proyecto.Controllers
             return View(model); // Si el modelo no es válido, simplemente retorna a la vista con los datos del formulario.
         }
 
-        public IActionResult MiPerfil()
+        public async Task<IActionResult> MiPerfil()
         {
-            // Aquí puedes recuperar la información del perfil del usuario logueado y enviarla a la vista
-            return View();
+            var token = HttpContext.Session.GetString("UserToken");
+
+            try
+            {
+                var usuario = await _apiService.GetPerfil(token);
+                return View(usuario);
+            }
+            catch (Exception ex)
+            {
+                // Puedes manejar el error como prefieras
+                ViewBag.ErrorMessage = ex.Message;
+                return View();
+            }
         }
 
         public async Task<IActionResult> Logout()
         {
-            return RedirectToAction("Index", "Home");  // Redirige al usuario a la página principal después de cerrar sesión.
+            return RedirectToAction("Index", "Home");
         }
-
-
 
     }
 }

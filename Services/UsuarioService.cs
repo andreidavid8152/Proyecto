@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Proyecto.Configurations;
 using Proyecto.Models;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 
 
@@ -24,7 +25,7 @@ namespace Proyecto.Services
             _httpClient = httpClient;
         }
 
-        public async Task<bool> registro(RegisterViewModel usuario)
+        public async Task<bool> Registro(RegisterViewModel usuario)
         {
             var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}Usuarios", usuario);
             if (response.IsSuccessStatusCode)
@@ -38,13 +39,19 @@ namespace Proyecto.Services
             }
         }
 
-        public async Task<bool> login(LoginViewModel usuario)
+        public async Task<String> Login(LoginViewModel usuario)
         {
 
             var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}Usuarios/login", usuario);
             if (response.IsSuccessStatusCode)
             {
-                return true;
+                // Deserializar el cuerpo de la respuesta para obtener el token
+                var responseBody = await response.Content.ReadAsStringAsync();
+                var tokenResponse = JsonConvert.DeserializeObject<TokenResponse>(responseBody);
+
+                // Aquí guardas el token, por ejemplo, en una variable de sesión o donde lo necesites.
+                // Por ahora, simplemente lo retornaremos:
+                return tokenResponse.Token;
             }
             else
             {
@@ -53,6 +60,23 @@ namespace Proyecto.Services
             }
 
         }
+
+        public async Task<RegisterViewModel> GetPerfil(string token)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.GetAsync($"{_baseUrl}Usuarios/perfil");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<RegisterViewModel>(content);
+            }
+            else
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                throw new Exception(errorMessage);
+            }
+        }
+
 
     }
 }
