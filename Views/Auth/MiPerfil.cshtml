@@ -1,4 +1,4 @@
-﻿@model RegisterViewModel
+﻿@model UserInputModel
 
 @{
     ViewData["Title"] = "MiPerfil";
@@ -7,7 +7,7 @@
 
 <h1>MiPerfil</h1>
 
-<form class="col-sm-4" method="post">
+<form asp-action="EditarPerfil" class="col-sm-4" method="post">
 
     <div class="form-group mb-5 mt-4">
         <label>Nombre</label>
@@ -29,7 +29,7 @@
 
     <div class="form-group mb-5">
         <label>Password</label>
-        <input type="password" asp-for="Password" class="form-control mt-2 placeholder-black" placeholder="Ingrese una contraseña">
+        <input asp-for="Password" class="form-control mt-2 placeholder-black" placeholder="Ingrese una contraseña">
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
 
@@ -40,3 +40,9 @@
 </form>
 
 
+<style>
+    .validation-summary-errors ul {
+        list-style-type: none;
+        padding-left: 0;
+    }
+</style>

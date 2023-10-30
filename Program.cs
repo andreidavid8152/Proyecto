@@ -17,6 +17,7 @@ builder.Services.AddHttpClient();
 
 // Registra el servicio ApiService como 'Scoped', lo que significa que se creará una instancia por cada solicitud. 
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<ILocalService, LocalService>();
 
 // Agregar servicios de sesión aquí
 builder.Services.AddSession();
@@ -34,6 +35,8 @@ app.UseRouting();
 
 // Middleware de sesión
 app.UseSession();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

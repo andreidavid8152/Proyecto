@@ -5,9 +5,10 @@ namespace Proyecto.Services
     public interface IUsuarioService
     {
 
-        Task<bool> Registro(RegisterViewModel usuario);
+        Task<bool> Registro(UserInputModel usuario);
         Task<String> Login(LoginViewModel usuario);
-        Task<RegisterViewModel> GetPerfil(string token);
+        Task<UserInputModel> GetPerfil(string token);
+        Task<bool> EditarPerfil(UserInputModel usuario, string token);
 
     }
 }

@@ -10,12 +10,12 @@ namespace Proyecto.Controllers
     {
 
         // Dependencia para comunicarse con la API.
-        private readonly IUsuarioService _apiService;
+        private readonly IUsuarioService _usuarioService;
 
         // Constructor que inyecta el servicio de la API.
-        public AuthController(IUsuarioService apiService)
+        public AuthController(IUsuarioService usuarioService)
         {
-            _apiService = apiService;
+            _usuarioService = usuarioService;
         }
 
         public IActionResult Login()
@@ -30,13 +30,13 @@ namespace Proyecto.Controllers
             {
                 try
                 {
-                    var token = await _apiService.Login(model);
+                    var token = await _usuarioService.Login(model);
                     if (!string.IsNullOrEmpty(token))
                     {
                         // Almacena el token en la sesión o en una cookie
                         HttpContext.Session.SetString("UserToken", token);
 
-                        return RedirectToAction("MiPerfil");
+                        return RedirectToAction("Dashboard", "Home");
                     }
                     else
                     {
@@ -59,13 +59,13 @@ namespace Proyecto.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        public async Task<IActionResult> Register(UserInputModel model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var result = await _apiService.Registro(model);
+                    var result = await _usuarioService.Registro(model);
                     if (result)
                     {
                         return RedirectToAction("Login", "Auth"); // Redirige al inicio de sesión después de un registro exitoso.
@@ -90,7 +90,8 @@ namespace Proyecto.Controllers
 
             try
             {
-                var usuario = await _apiService.GetPerfil(token);
+                var usuario = await _usuarioService.GetPerfil(token);
+                usuario.Password = new string('*', usuario.Password.Length);
                 return View(usuario);
             }
             catch (Exception ex)
@@ -100,6 +101,38 @@ namespace Proyecto.Controllers
                 return View();
             }
         }
+
+        public async Task<IActionResult> EditarPerfil(UserInputModel usuarioEditado)
+        {
+            if (ModelState.IsValid)
+            {
+                var token = HttpContext.Session.GetString("UserToken");
+
+                try
+                {
+                    var result = await _usuarioService.EditarPerfil(usuarioEditado, token);
+                    if (result)
+                    {
+                        // Si la edición fue exitosa, redirige al usuario a su perfil.
+                        return RedirectToAction("MiPerfil");
+                    }
+                    else
+                    {
+                        // Si hay un problema, muestra un mensaje de error.
+                        ViewBag.ErrorMessage = "Hubo un problema al editar el perfil.";
+                        return View("MiPerfil", usuarioEditado);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                    return View("MiPerfil", usuarioEditado);
+                }
+            }
+
+            // Si el modelo no es válido, simplemente retorna a la vista con los datos del formulario.
+            return View("MiPerfil", usuarioEditado);
+        }   
 
         public async Task<IActionResult> Logout()
         {

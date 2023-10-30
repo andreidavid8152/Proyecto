@@ -25,7 +25,7 @@ namespace Proyecto.Services
             _httpClient = httpClient;
         }
 
-        public async Task<bool> Registro(RegisterViewModel usuario)
+        public async Task<bool> Registro(UserInputModel usuario)
         {
             var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}Usuarios", usuario);
             if (response.IsSuccessStatusCode)
@@ -61,14 +61,14 @@ namespace Proyecto.Services
 
         }
 
-        public async Task<RegisterViewModel> GetPerfil(string token)
+        public async Task<UserInputModel> GetPerfil(string token)
         {
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _httpClient.GetAsync($"{_baseUrl}Usuarios/perfil");
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<RegisterViewModel>(content);
+                return JsonConvert.DeserializeObject<UserInputModel>(content);
             }
             else
             {
@@ -77,6 +77,20 @@ namespace Proyecto.Services
             }
         }
 
-
+        public async Task<bool> EditarPerfil(UserInputModel usuario, string token)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var jsonContent = new StringContent(JsonConvert.SerializeObject(usuario), Encoding.UTF8, "application/json");
+            var response = await _httpClient.PutAsync($"{_baseUrl}Usuarios/editarperfil", jsonContent);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                throw new Exception(errorMessage);
+            }
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Proyecto.Models
 {
-    public class RegisterViewModel
+    public class UserInputModel
     {
 
         [Required(ErrorMessage = "El campo nombre es obligatorio.")]
@@ -16,7 +16,6 @@ namespace Proyecto.Models
         public string Username { get; set; }
 
         [Required(ErrorMessage = "El campo password es obligatorio.")]
-        [DataType(DataType.Password)]
         [MinLength(4, ErrorMessage = "La password debe tener al menos 4 caracteres.")]
         public string Password { get; set; }
     }
