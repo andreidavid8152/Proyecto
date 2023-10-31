@@ -1,0 +1,52 @@
+﻿@model List<ImagenLocalViewModel>;
+
+@{
+    ViewData["Title"] = "Imagenes";
+    Layout = "~/Views/Shared/_LoggedLayout.cshtml";
+}
+
+<h1>Imagenes</h1>
+
+<div class="text-center">
+    <div class="container mt-4">
+        <div class="alert alert-info mt-3" role="alert">
+            <b>Nota:</b> Solo puedes agregar tres imágenes.
+        </div>
+
+        <form method="POST" asp-action="CreateImagenes">
+            <div id="imagenesContainer">
+                <!-- Campo de imagen 1 -->
+                <div class="row mb-2 justify-content-center">
+                    <div class="col-md-12">
+                        <b><label for="imagen1">Imagen 1:</label></b><br /><br />
+                    </div>
+                    <div class="col-md-6">
+                        <input type="url" asp-for="@Model[0].Url" class="form-control mb-2" placeholder="URL de la imagen 1" required>
+                    </div>
+                </div>
+
+                <!-- Campo de imagen 2 -->
+                <div class="row mb-2 justify-content-center">
+                    <div class="col-md-12">
+                        <b><label for="imagen2">Imagen 2:</label></b><br /><br />
+                    </div>
+                    <div class="col-md-6">
+                        <input type="url" asp-for="@Model[1].Url" class="form-control mb-2" placeholder="URL de la imagen 2" required>
+                    </div>
+                </div>
+
+                <!-- Campo de imagen 3 -->
+                <div class="row mb-4 justify-content-center">
+                    <div class="col-md-12">
+                        <b><label for="imagen3">Imagen 3:</label></b><br /><br />
+                    </div>
+                    <div class="col-md-6">
+                        <input type="url" asp-for="@Model[2].Url" class="form-control mb-2" placeholder="URL de la imagen 3" required>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn" style="background-color: #3CAF50; color: #FFFFFF;">Guardar</button>
+        </form>
+    </div>
+</div>

@@ -59,7 +59,7 @@ namespace Proyecto.Services
             throw new Exception("No se pudo obtener los locales desde la API.");
         }
 
-        public async Task<bool> CrearLocal(LocalViewModel local, string token)
+        public async Task<LocalViewModel> CrearLocal(LocalViewModel local, string token)
         {
             // Añade el token como header de autorización
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -68,7 +68,9 @@ namespace Proyecto.Services
 
             if (response.IsSuccessStatusCode)
             {
-                return true;
+                var content = await response.Content.ReadAsStringAsync();
+                var localCreado = JsonConvert.DeserializeObject<LocalViewModel>(content);
+                return localCreado;
             }
             else
             {
@@ -92,6 +94,46 @@ namespace Proyecto.Services
             }
 
             throw new Exception("No se pudo obtener los locales del arrendador desde la API.");
+        }
+
+        public async Task<bool> AddHorarios(string token, int localId, List<HorarioViewModel> horarios)
+        {
+            // Añade el token como header de autorización
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            // Realiza la petición HTTP PATCH
+            var response = await _httpClient.PatchAsync($"{_baseUrl}Locales/AddHorarios/{localId}",
+                new StringContent(JsonConvert.SerializeObject(horarios), Encoding.UTF8, "application/json"));
+
+            if (response.IsSuccessStatusCode)
+            {
+                return true; // Retornamos true para indicar éxito en la operación
+            }
+            else
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                throw new Exception(errorMessage);
+            }
+        }
+
+        public async Task<bool> AddImagenes(string token, int localId, List<ImagenLocalViewModel> imagenes)
+        {
+            // Añade el token como header de autorización
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            // Realiza la petición HTTP PATCH
+            var response = await _httpClient.PatchAsync($"{_baseUrl}Locales/AddImagenes/{localId}",
+                new StringContent(JsonConvert.SerializeObject(imagenes), Encoding.UTF8, "application/json"));
+
+            if (response.IsSuccessStatusCode)
+            {
+                return true; // Retornamos true para indicar éxito en la operación
+            }
+            else
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                throw new Exception(errorMessage);
+            }
         }
     }
 }

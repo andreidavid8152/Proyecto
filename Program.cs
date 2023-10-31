@@ -1,5 +1,6 @@
 using Proyecto.Configurations;
 using Proyecto.Services;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
