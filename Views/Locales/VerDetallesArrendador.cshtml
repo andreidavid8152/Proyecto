@@ -1,10 +1,12 @@
 ﻿@model LocalViewModel
 
 @{
-    ViewData["Title"] = "VerDetallesCliente";
+    ViewData["Title"] = "Ver Detalles Arrendador";
     Layout = "~/Views/Shared/_LoggedLayout.cshtml";
     var local = Model;
 }
+
+<h1>Ver Detalles Arrendador</h1>
 
 <div class="container">
     <div class="row">
@@ -16,44 +18,22 @@
                 <div class="card-body">
 
                     <div class="container">
-                         @if (local.Imagenes != null && local.Imagenes.Count > 0)
-                        {
-                            <div class="row">
-                                <!-- Banner (Imagen Arriba) -->
-                                <div class="col-12 text-center ">
-                                    <img src="@local.Imagenes[0].Url" class="img-fluid" style="width: 850px; height: 350px; object-fit: cover; object-position: center;">
-                                </div>
+                        <div class="row">
+                            <!-- Banner (Imagen Arriba) -->
+                            <div class="col-12 text-center ">
+                                <img src="@local.Imagenes[0].Url" class="img-fluid" style="width: 850px; height: 350px; object-fit: cover; object-position: center;">
                             </div>
-                            <div class="row mt-3">
-                                <!-- Imagen Abajo Izquierda -->
-                                <div class="col-md-6 text-center">
-                                    <img src="@local.Imagenes[1].Url" class="img-fluid" style="height: 300px;">
-                                </div>
-                                <!-- Imagen Abajo Derecha -->
-                                <div class="col-md-6 text-center">
-                                    <img src="@local.Imagenes[2].Url" class="img-fluid" style="height: 300px;">
-                                </div>
+                        </div>
+                        <div class="row mt-3">
+                            <!-- Imagen Abajo Izquierda -->
+                            <div class="col-md-6 text-center">
+                                <img src="@local.Imagenes[1].Url" class="img-fluid" style="height: 300px;">
                             </div>
-                        }
-                        else
-                        {
-                            <div class="row">
-                                <!-- Banner (Imagen Arriba) -->
-                                <div class="col-12 text-center ">
-                                    <img src="rutaImagenPorDefecto.jpg" class="img-fluid">
-                                </div>
+                            <!-- Imagen Abajo Derecha -->
+                            <div class="col-md-6 text-center">
+                                <img src="@local.Imagenes[2].Url" class="img-fluid" style="height: 300px;">
                             </div>
-                            <div class="row mt-3">
-                                <!-- Imagen Abajo Izquierda -->
-                                <div class="col-md-6 text-center">
-                                    <img src="rutaImagenPorDefecto.jpg" class="img-fluid">
-                                </div>
-                                <!-- Imagen Abajo Derecha -->
-                                <div class="col-md-6 text-center">
-                                    <img src="rutaImagenPorDefecto.jpg" class="img-fluid">
-                                </div>
-                            </div>
-                        }
+                        </div>
                     </div>
 
 
@@ -69,7 +49,7 @@
                             <label for="fecha">Fecha:</label>
 
                             <input type="date" id="fechaReserva" value="@DateTime.Now.ToString("yyyy-MM-dd")" min="@DateTime.Now.ToString("yyyy-MM-dd")">
-                            <button class="btn btn-outline-info ms-4" onclick="verificarDisponibilidad()">Verificar Disponibilidad</button>
+                            <button class="btn ms-4" onclick="verificarDisponibilidad()">Verificar Disponibilidad</button>
                             <br /> <br />
 
                             @foreach (var horario in local.Horarios)
@@ -82,13 +62,6 @@
                             <br />
                             <h5 style="color:black">Calificaciones</h5>
                         </div>
-                        
-                        <form asp-controller="Reservas" asp-action="CrearReserva" method="POST">
-                            <input type="hidden" name="LocalID" value="@local.Id">
-                            <input type="hidden" name="HorarioID" id="horarioInput">
-                            <input type="date" id="fechaReserva" name="Fecha" value="@DateTime.Now.ToString("yyyy-MM-dd")" min="@DateTime.Now.ToString("yyyy-MM-dd")">
-                        </form>
-
 
 
                     </div>
@@ -99,15 +72,6 @@
 </div>
 
 <script>
-    
-    function hacerReserva(horarioId) {
-        // Coloca el ID del horario en el input correspondiente
-        document.getElementById("horarioInput").value = horarioId;
-
-        // Envía el formulario
-        document.forms[0].submit();
-    }
-
 
     function verificarDisponibilidad() {
 
@@ -133,13 +97,12 @@
 
 
                     if (isDisponible) {
-                        horarioElement.innerHTML = `
-                        ${horario.horaInicio} - ${horario.horaFin} <button class=" ms-4 btn btn-outline-success" onclick="hacerReserva(${horarioId})">Disponible</button>`;
+                        horarioElement.style.backgroundColor = "#d4edda";
+                        horarioElement.textContent = `${horario.horaInicio} - ${horario.horaFin} (Disponible)`;
                     } else {
-                        horarioElement.innerHTML = `
-                    ${horario.horaInicio} - ${horario.horaFin} <button class=" ms-4 btn btn-outline-danger">No Disponible</button>`;
+                        horarioElement.style.backgroundColor = "#f8d7da";
+                        horarioElement.textContent = `${horario.horaInicio} - ${horario.horaFin} (No Disponible)`;
                     }
-
                 });
         });
     }

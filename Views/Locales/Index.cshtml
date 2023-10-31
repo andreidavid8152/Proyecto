@@ -18,8 +18,14 @@
             <div class="card mb-3 mx-2" style="width: 840px;">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <!-- Aquí puedes poner una imagen si la tienes. Por ejemplo: -->
-                        <!-- <img src="" class="img-fluid rounded-start" alt="Foto del local"> -->
+                        @if (local.Imagenes != null && local.Imagenes.Count > 0)
+                        {
+                            <img src="@local.Imagenes[0].Url" class="img-fluid rounded-start" alt="Foto del local">
+                        }
+                        else
+                        {
+                            <img src="rutaImagenPorDefecto.jpg" class="img-fluid rounded-start" alt="Imagen por defecto">
+                        }
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">

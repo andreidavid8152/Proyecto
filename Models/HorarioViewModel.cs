@@ -5,6 +5,7 @@ namespace Proyecto.Models
 {
     public class HorarioViewModel
     {
+        public int ID { get; set; }
         public int LocalID { get; set; }
 
         [Required(ErrorMessage = "La hora de inicio es requerida.")]
