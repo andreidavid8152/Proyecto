@@ -22,7 +22,19 @@ namespace Proyecto.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View();
+            var token = HttpContext.Session.GetString("UserToken"); // Obtiene el token de la sesión.
+
+            try
+            {
+                var locales = await _localService.ObtenerLocalesArrendador(token);
+                return View(locales); // Pasa los locales a la vista.
+            }
+            catch (Exception ex)
+            {
+                // Puedes manejar el error como prefieras.
+                ViewBag.ErrorMessage = ex.Message;
+                return View();
+            }
         }
 
         [HttpGet("Create")]

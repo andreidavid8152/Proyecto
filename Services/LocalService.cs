@@ -76,5 +76,22 @@ namespace Proyecto.Services
                 throw new Exception(errorMessage);
             }
         }
+
+        public async Task<List<LocalViewModel>> ObtenerLocalesArrendador(string token)
+        {
+            // Añade el token como header de autorización
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.GetAsync($"{_baseUrl}Locales/Arrendador");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var localesArrendador = JsonConvert.DeserializeObject<List<LocalViewModel>>(content);
+                return localesArrendador;
+            }
+
+            throw new Exception("No se pudo obtener los locales del arrendador desde la API.");
+        }
     }
 }
