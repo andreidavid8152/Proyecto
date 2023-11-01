@@ -17,9 +17,21 @@ namespace Proyecto.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var token = HttpContext.Session.GetString("UserToken"); // Obtiene el token de la sesión.
+
+            try
+            {
+                var reservas = await _reservaService.ObtenerReservasCliente(token);
+                return View(reservas); // Pasa los locales a la vista.
+            }
+            catch (Exception ex)
+            {
+                // Puedes manejar el error como prefieras.
+                ViewBag.ErrorMessage = ex.Message;
+                return View();
+            }
         }
 
         [HttpPost]
@@ -34,10 +46,12 @@ namespace Proyecto.Controllers
 
             reserva.UsuarioID = int.Parse(claimUserId);
 
+            Console.WriteLine(reserva);
+
             try
             {
                 var result = await _reservaService.Reservar(reserva, token);
-                return View("Index");
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {

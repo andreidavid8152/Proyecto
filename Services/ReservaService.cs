@@ -43,5 +43,23 @@ namespace Proyecto.Services
 
         }
 
+        public async Task<List<ReservaViewModel>> ObtenerReservasCliente(string token)
+        {
+            // Añade el token como header de autorización
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.GetAsync($"{_baseUrl}Reservas/Cliente");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var reserva = JsonConvert.DeserializeObject<List<ReservaViewModel>>(content);
+                return reserva;
+            }
+
+            throw new Exception("No se pudo obtener las reservas desde la API.");
+
+        }
+
     }
 }

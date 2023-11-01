@@ -86,7 +86,7 @@
                         <form asp-controller="Reservas" asp-action="CrearReserva" method="POST">
                             <input type="hidden" name="LocalID" value="@local.Id">
                             <input type="hidden" name="HorarioID" id="horarioInput">
-                            <input type="date" id="fechaReserva" name="Fecha" value="@DateTime.Now.ToString("yyyy-MM-dd")" min="@DateTime.Now.ToString("yyyy-MM-dd")">
+                            <input type="hidden" id="fechaReservaEnvio" name="Fecha">
                         </form>
 
 
@@ -103,6 +103,8 @@
     function hacerReserva(horarioId) {
         // Coloca el ID del horario en el input correspondiente
         document.getElementById("horarioInput").value = horarioId;
+        // Coloca el ID de la fecha en la fecha de envio
+        document.getElementById("fechaReservaEnvio").value = document.getElementById("fechaReserva").value;
 
         // Envía el formulario
         document.forms[0].submit();

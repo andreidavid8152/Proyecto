@@ -1,8 +1,42 @@
-﻿
+﻿@model List<ReservaViewModel>
+
 @{
     ViewData["Title"] = "Mis Reservas";
     Layout = "~/Views/Shared/_LoggedLayout.cshtml";
+    var reservas = Model;
+
 }
 
 <h1>Mis Reservas</h1>
 
+<div class="d-flex flex-wrap justify-content-center">
+
+    @foreach (var reserva in reservas)
+    {
+        <div class="card mb-3 mx-2" style="width: 840px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    @if (reserva.Local.Imagenes != null && reserva.Local.Imagenes.Count > 0)
+                    {
+                        <img src="@reserva.Local.Imagenes[0].Url" class="img-fluid rounded-start" alt="Foto del local">
+                    }
+                    else
+                    {
+                        <img src="rutaImagenPorDefecto.jpg" class="img-fluid rounded-start" alt="Imagen por defecto">
+                    }
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title" style="font-weight: bold;">@reserva.Local.Nombre</h5>
+                        <p class="card-text"> <b>Fecha: </b>  @reserva.Fecha</p>
+                        <p class="card-text"> <b>Horario: </b>  @reserva.Horario.HoraInicio - @reserva.Horario.HoraFin</p>
+                        <a class="btn btn-outline-dark"><i class="bi bi-chat-dots"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+        
+    

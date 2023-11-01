@@ -8,5 +8,9 @@
         public int HorarioID { get; set; } // Relación con Horario
         public DateTime Fecha { get; set; }
 
+        //Relacion
+        public LocalViewModel? Local { get; set; }
+        public HorarioViewModel? Horario { get; set; }
+
     }
 }

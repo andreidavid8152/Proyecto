@@ -31,7 +31,9 @@
                         <div class="card-body">
                             <h5 class="card-title" style="font-weight: bold;">@local.Nombre</h5>
                             <p class="card-text">@local.Descripcion</p>
-                            <a asp-controller="Locales" asp-action="VerDetallesCliente" asp-route-id="@local.Id" class="btn" style="background-color: #00BFD6; color: #FFFFFF;">Ver mas...</a>
+                            <a asp-controller="Locales" asp-action="VerDetallesCliente" asp-route-id="@local.Id" class="ms-1 btn btn-outline-warning"><i class="bi bi-eye-fill"></i></a>
+                            <a asp-controller="Locales" asp-action="VerDetallesCliente" asp-route-id="@local.Id" class="ms-2 btn" style="background-color: #20BFD6; color: #FFFFFF;"><i class="bi bi-pencil-square"></i></a>
+                            <a asp-controller="Locales" asp-action="VerDetallesCliente" asp-route-id="@local.Id" class="ms-2 btn btn-outline-danger"><i class="bi bi-trash"></i></a>
                         </div>
                     </div>
                 </div>
