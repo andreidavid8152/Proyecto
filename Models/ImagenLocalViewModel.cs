@@ -3,8 +3,10 @@
     public class ImagenLocalViewModel
     {
 
-        public string Url { get; set; } // Ruta o URL de la imagen.
-        public int LocalID { get; set; } // El ID del local al que pertenece la imagen.
+        public string Url { get; set; }
+
+        public int LocalID { get; set; }
+
         public LocalViewModel? Local { get; set; }
 
 

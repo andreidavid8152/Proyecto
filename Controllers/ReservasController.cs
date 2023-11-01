@@ -16,6 +16,7 @@ namespace Proyecto.Controllers
             _reservaService = reservaService;
         }
 
+        // Ruta que muestra las reservas del usuario.
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -34,6 +35,7 @@ namespace Proyecto.Controllers
             }
         }
 
+        // Ruta que crea una reserva.
         [HttpPost]
         public async Task<IActionResult> CrearReserva(ReservaViewModel reserva)
         {
@@ -60,7 +62,6 @@ namespace Proyecto.Controllers
                 return View("Index");
             }
         }
-
 
     }
 }

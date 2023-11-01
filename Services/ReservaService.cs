@@ -23,7 +23,6 @@ namespace Proyecto.Services
             _httpClient = httpClient;
         }
 
-
         public async Task<bool> Reservar(ReservaViewModel reserva, string token)
         {
             // Añade el token como header de autorización
@@ -45,7 +44,6 @@ namespace Proyecto.Services
 
         public async Task<List<ReservaViewModel>> ObtenerReservasCliente(string token)
         {
-            // Añade el token como header de autorización
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var response = await _httpClient.GetAsync($"{_baseUrl}Reservas/Cliente");

@@ -44,7 +44,6 @@ namespace Proyecto.Services
 
         public async Task<LocalViewModel> ObtenerLocal(int id, string token)
         {
-            // Añade el token como header de autorización
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var response = await _httpClient.GetAsync($"{_baseUrl}Locales/{id}");
@@ -61,7 +60,6 @@ namespace Proyecto.Services
 
         public async Task<LocalViewModel> CrearLocal(LocalViewModel local, string token)
         {
-            // Añade el token como header de autorización
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}Locales", local);
@@ -81,7 +79,6 @@ namespace Proyecto.Services
 
         public async Task<List<LocalViewModel>> ObtenerLocalesArrendador(string token)
         {
-            // Añade el token como header de autorización
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var response = await _httpClient.GetAsync($"{_baseUrl}Locales/Arrendador");
@@ -98,7 +95,6 @@ namespace Proyecto.Services
 
         public async Task<bool> AddHorarios(string token, int localId, List<HorarioViewModel> horarios)
         {
-            // Añade el token como header de autorización
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             // Realiza la petición HTTP PATCH
@@ -118,7 +114,6 @@ namespace Proyecto.Services
 
         public async Task<bool> AddImagenes(string token, int localId, List<ImagenLocalViewModel> imagenes)
         {
-            // Añade el token como header de autorización
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             // Realiza la petición HTTP PATCH
@@ -138,7 +133,6 @@ namespace Proyecto.Services
 
         public async Task<bool> EditarLocal(int id, LocalViewModel local, string token)
         {
-            // Añade el token como header de autorización
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             // Realiza la petición HTTP PUT
@@ -158,7 +152,6 @@ namespace Proyecto.Services
 
         public async Task<bool> EditarImagenesLocal(int localId, List<ImagenLocalViewModel> imagenesNuevas, string token)
         {
-            // Añade el token como header de autorización
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             // Realiza la petición HTTP PUT
@@ -167,7 +160,7 @@ namespace Proyecto.Services
 
             if (response.IsSuccessStatusCode)
             {
-                return true; // Retornamos true para indicar éxito en la operación
+                return true;
             }
             else
             {
@@ -178,10 +171,8 @@ namespace Proyecto.Services
 
         public async Task<bool> EliminarLocal(int id, string token)
         {
-            // Añade el token como header de autorización
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            // Realiza la petición HTTP DELETE
             var response = await _httpClient.DeleteAsync($"{_baseUrl}Locales/{id}");
 
             if (response.IsSuccessStatusCode)

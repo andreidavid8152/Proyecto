@@ -10,18 +10,19 @@ namespace Proyecto.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ILocalService _localService;
 
-
         public HomeController(ILogger<HomeController> logger, ILocalService localService)
         {
             _logger = logger;
             _localService = localService;
         }
 
+        // Ruta que muestra la pagina principal
         public IActionResult Index()
         {
             return View();
         }
 
+        // Ruta que muestra el dashboard cuando un usuario ha iniciado sesión
         public async Task<IActionResult> Dashboard()
         {
             var token = HttpContext.Session.GetString("UserToken"); // Obtiene el token de la sesión.
@@ -33,11 +34,11 @@ namespace Proyecto.Controllers
             }
             catch (Exception ex)
             {
-                // Puedes manejar el error como prefieras.
                 ViewBag.ErrorMessage = ex.Message;
                 return View();
             }
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

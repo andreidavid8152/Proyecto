@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace Proyecto.Controllers
 {
-
+    // Ruta sobreescrita
     [Route("MisLocales")]
     public class LocalesController : Controller
     {
@@ -20,6 +20,7 @@ namespace Proyecto.Controllers
             _localService = localService;
         }
 
+        // Ruta que muestra los locales creados del cliente
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -38,12 +39,14 @@ namespace Proyecto.Controllers
             }
         }
 
+        // Ruta va a la vista para crear un local
         [HttpGet("Create")]
         public IActionResult Create()
         {
             return View();
         }
 
+        // Ruta que crea un local
         [HttpPost]
         public async Task<IActionResult> Create(LocalViewModel local)
         {
@@ -77,14 +80,15 @@ namespace Proyecto.Controllers
             }
             return View(local);
         }
-
         
+        // Ruta que va a la vista para crear horarios
         [HttpGet("Horarios/{id}")]
         public async Task<IActionResult> CreateHorarios(int id)
         {
             return View();
         }
 
+        // Ruta que crea horarios
         [HttpPost("Horarios/{id}")]
         public async Task<IActionResult> CreateHorarios(int id, List<HorarioViewModel> horarios)
         {
@@ -127,12 +131,14 @@ namespace Proyecto.Controllers
             }
         }
 
+        // Ruta que va a la vista para crear imagenes
         [HttpGet("Imagenes/{id}")]
         public async Task<IActionResult> CreateImagenes(int id)
         {
             return View();
         }
 
+        // Ruta que crea imagenes
         [HttpPost("Imagenes/{id}")]
         public async Task<IActionResult> CreateImagenes(int id, List<ImagenLocalViewModel> imagenes)
         {
@@ -158,7 +164,7 @@ namespace Proyecto.Controllers
             }
         }
 
-
+        // Ruta que muestra el detalles de un local publicado por otro
         [HttpGet("DetallesCliente")]
         public async Task<IActionResult> VerDetallesCliente(int id)
         {
@@ -177,6 +183,7 @@ namespace Proyecto.Controllers
             }
         }
 
+        // Ruta que muestra el detalle de un local creado por el cliente
         [HttpGet("DetallesArrendador")]
         public async Task<IActionResult> VerDetallesArrendador(int id)
         {
@@ -195,6 +202,7 @@ namespace Proyecto.Controllers
             }
         }
 
+        // Ruta que va a la vista para editar un local
         [HttpGet("Editar")]
         public async Task<IActionResult> EditarLocal(int id)
         {
@@ -213,6 +221,7 @@ namespace Proyecto.Controllers
             }
         }
 
+        // Ruta que edita un local
         [HttpPost("Editar")]
         public async Task<IActionResult> EditarLocal(int id, LocalViewModel local)
         {
@@ -247,6 +256,7 @@ namespace Proyecto.Controllers
             }
         }
 
+        // Ruta que va a la vista para editar imagenes
         [HttpGet("Editar/Imagenes")]
         public async Task<IActionResult> EditarImagenes(int id)
         {
@@ -254,6 +264,7 @@ namespace Proyecto.Controllers
             return View();
         }
 
+        // Ruta que edita imagenes
         [HttpPost("Editar/Imagenes")]
         public async Task<IActionResult> EditarImagenes(List<ImagenLocalViewModel> imagenes)
         {
@@ -273,6 +284,7 @@ namespace Proyecto.Controllers
             }
         }
 
+        // Ruta que elimina un local
         [HttpGet("Eliminar/{id}")]
         public async Task<IActionResult> EliminarLocal(int id)
         {

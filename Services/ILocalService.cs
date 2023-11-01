@@ -13,6 +13,5 @@ namespace Proyecto.Services
         Task<bool> AddImagenes(string token, int localId, List<ImagenLocalViewModel> imagenes);
         Task<bool> EditarImagenesLocal(int localId, List<ImagenLocalViewModel> imagenesNuevas, string token);
         Task<bool> EliminarLocal(int id, string token);
-
     }
 }

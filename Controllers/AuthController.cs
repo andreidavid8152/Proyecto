@@ -18,11 +18,13 @@ namespace Proyecto.Controllers
             _usuarioService = usuarioService;
         }
 
+        // Ruta que muestra el formulario de inicio de sesión.
         public IActionResult Login()
         {
             return View();
         }
 
+        // Ruta que recibe los datos del formulario de inicio de sesión.
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -53,11 +55,13 @@ namespace Proyecto.Controllers
             return View(model);
         }
 
+        // Ruta que muestra el formulario de registro.
         public IActionResult Register()
         {
             return View();
         }
 
+        // Ruta que recibe los datos del formulario de registro.
         [HttpPost]
         public async Task<IActionResult> Register(UserInputModel model)
         {
@@ -84,6 +88,7 @@ namespace Proyecto.Controllers
             return View(model); // Si el modelo no es válido, simplemente retorna a la vista con los datos del formulario.
         }
 
+        // Ruta que muestran los datos del usuario autenticado.
         public async Task<IActionResult> MiPerfil()
         {
             var token = HttpContext.Session.GetString("UserToken");
@@ -102,6 +107,7 @@ namespace Proyecto.Controllers
             }
         }
 
+        // Ruta que recibe los datos del formulario de edición de perfil.
         public async Task<IActionResult> EditarPerfil(UserInputModel usuarioEditado)
         {
             if (ModelState.IsValid)
@@ -134,6 +140,7 @@ namespace Proyecto.Controllers
             return View("MiPerfil", usuarioEditado);
         }   
 
+        // Ruta que cierra la sesión del usuario.
         public async Task<IActionResult> Logout()
         {
             return RedirectToAction("Index", "Home");

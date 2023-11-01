@@ -49,8 +49,6 @@ namespace Proyecto.Services
                 var responseBody = await response.Content.ReadAsStringAsync();
                 var tokenResponse = JsonConvert.DeserializeObject<TokenResponse>(responseBody);
 
-                // Aquí guardas el token, por ejemplo, en una variable de sesión o donde lo necesites.
-                // Por ahora, simplemente lo retornaremos:
                 return tokenResponse.Token;
             }
             else
