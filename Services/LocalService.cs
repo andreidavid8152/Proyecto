@@ -42,12 +42,12 @@ namespace Proyecto.Services
             throw new Exception("No se pudo obtener los locales desde la API.");
         }
 
-        public async Task<LocalViewModel> ObtenerLocalCliente(int id, string token)
+        public async Task<LocalViewModel> ObtenerLocal(int id, string token)
         {
             // Añade el token como header de autorización
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await _httpClient.GetAsync($"{_baseUrl}Locales/Cliente/{id}");
+            var response = await _httpClient.GetAsync($"{_baseUrl}Locales/{id}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -135,5 +135,64 @@ namespace Proyecto.Services
                 throw new Exception(errorMessage);
             }
         }
+
+        public async Task<bool> EditarLocal(int id, LocalViewModel local, string token)
+        {
+            // Añade el token como header de autorización
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            // Realiza la petición HTTP PUT
+            var response = await _httpClient.PutAsync($"{_baseUrl}Locales/{id}",
+                new StringContent(JsonConvert.SerializeObject(local), Encoding.UTF8, "application/json"));
+
+            if (response.IsSuccessStatusCode)
+            {
+                return true; // Retornamos true para indicar éxito en la operación
+            }
+            else
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                throw new Exception(errorMessage);
+            }
+        }
+
+        public async Task<bool> EditarImagenesLocal(int localId, List<ImagenLocalViewModel> imagenesNuevas, string token)
+        {
+            // Añade el token como header de autorización
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            // Realiza la petición HTTP PUT
+            var response = await _httpClient.PutAsync($"{_baseUrl}Locales/Imagenes/Edit/{localId}",
+                new StringContent(JsonConvert.SerializeObject(imagenesNuevas), Encoding.UTF8, "application/json"));
+
+            if (response.IsSuccessStatusCode)
+            {
+                return true; // Retornamos true para indicar éxito en la operación
+            }
+            else
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                throw new Exception(errorMessage);
+            }
+        }
+
+        public async Task<bool> EliminarLocal(int id, string token)
+        {
+            // Añade el token como header de autorización
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            // Realiza la petición HTTP DELETE
+            var response = await _httpClient.DeleteAsync($"{_baseUrl}Locales/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return true; // Retornamos true para indicar éxito en la operación
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }

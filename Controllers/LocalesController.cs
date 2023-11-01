@@ -166,7 +166,7 @@ namespace Proyecto.Controllers
 
             try
             {
-                var local = await _localService.ObtenerLocalCliente(id, token);
+                var local = await _localService.ObtenerLocal(id, token);
                 return View(local); // Pasa los locales a la vista.
             }
             catch (Exception ex)
@@ -176,5 +176,128 @@ namespace Proyecto.Controllers
                 return View();
             }
         }
+
+        [HttpGet("DetallesArrendador")]
+        public async Task<IActionResult> VerDetallesArrendador(int id)
+        {
+            var token = HttpContext.Session.GetString("UserToken"); // Obtiene el token de la sesión.
+
+            try
+            {
+                var local = await _localService.ObtenerLocal(id, token);
+                return View(local); // Pasa los locales a la vista.
+            }
+            catch (Exception ex)
+            {
+                // Puedes manejar el error como prefieras.
+                ViewBag.ErrorMessage = ex.Message;
+                return View();
+            }
+        }
+
+        [HttpGet("Editar")]
+        public async Task<IActionResult> EditarLocal(int id)
+        {
+            var token = HttpContext.Session.GetString("UserToken"); // Obtiene el token de la sesión.
+
+            try
+            {
+                var local = await _localService.ObtenerLocal(id, token);
+                return View(local); // Pasa los locales a la vista.
+            }
+            catch (Exception ex)
+            {
+                // Puedes manejar el error como prefieras.
+                ViewBag.ErrorMessage = ex.Message;
+                return View();
+            }
+        }
+
+        [HttpPost("Editar")]
+        public async Task<IActionResult> EditarLocal(int id, LocalViewModel local)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var token = HttpContext.Session.GetString("UserToken"); // Obtiene el token de la sesión.
+
+                try
+                {
+                    var resultado = await _localService.EditarLocal(id, local, token);
+
+                    if (resultado)
+                    {
+                        return RedirectToAction("EditarImagenes", new { id = id }); // Si todo sale bien, redirige a otra vista, como el índice.
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "No se pudo editar el local.";
+                        return View(local); // Devuelve la misma vista con un mensaje de error.
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.ErrorMessage = ex.Message;
+                    return View(local); // Devuelve la misma vista con el mensaje de error.
+                }
+            }
+            else
+            {
+                return View(local);
+            }
+        }
+
+        [HttpGet("Editar/Imagenes")]
+        public async Task<IActionResult> EditarImagenes(int id)
+        {
+            TempData["LocalId"] = id;  // En el método GET
+            return View();
+        }
+
+        [HttpPost("Editar/Imagenes")]
+        public async Task<IActionResult> EditarImagenes(List<ImagenLocalViewModel> imagenes)
+        {
+            var id = (int)TempData["LocalId"];  // En el método POST
+            var token = HttpContext.Session.GetString("UserToken"); // Obtiene el token de la sesión.
+
+            try
+            {
+                var local = await _localService.EditarImagenesLocal(id, imagenes, token);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                // Puedes manejar el error como prefieras.
+                ViewBag.ErrorMessage = ex.Message;
+                return View();
+            }
+        }
+
+        [HttpGet("Eliminar/{id}")]
+        public async Task<IActionResult> EliminarLocal(int id)
+        {
+            var token = HttpContext.Session.GetString("UserToken"); // Obtiene el token de la sesión.
+
+            try
+            {
+                var resultado = await _localService.EliminarLocal(id, token);
+
+                if (resultado)
+                {
+                    TempData["MensajeError"] = "Local eliminado correctamente";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["MensajeError"] = "No se pudo eliminar el local porque tiene reservaciones";
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
     }
 }

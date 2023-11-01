@@ -8,6 +8,14 @@
 
 <h1>Mis Locales</h1>
 
+@if (TempData["MensajeError"] != null)
+{
+    <div class="alert alert-danger" style="color:white">
+        @TempData["MensajeError"]
+    </div>
+}
+
+
 <button type="button" class="btn mt-3" style="background-color: #4CAF50; color: white;" onclick="location.href='@Url.Action("Create", "Locales")'">Crear</button>
 
 @if (locales != null && locales.Any())
@@ -31,9 +39,9 @@
                         <div class="card-body">
                             <h5 class="card-title" style="font-weight: bold;">@local.Nombre</h5>
                             <p class="card-text">@local.Descripcion</p>
-                            <a asp-controller="Locales" asp-action="VerDetallesCliente" asp-route-id="@local.Id" class="ms-1 btn btn-outline-warning"><i class="bi bi-eye-fill"></i></a>
-                            <a asp-controller="Locales" asp-action="VerDetallesCliente" asp-route-id="@local.Id" class="ms-2 btn" style="background-color: #20BFD6; color: #FFFFFF;"><i class="bi bi-pencil-square"></i></a>
-                            <a asp-controller="Locales" asp-action="VerDetallesCliente" asp-route-id="@local.Id" class="ms-2 btn btn-outline-danger"><i class="bi bi-trash"></i></a>
+                            <a asp-controller="Locales" asp-action="VerDetallesArrendador" asp-route-id="@local.Id" class="ms-1 btn btn-outline-warning"><i class="bi bi-eye-fill"></i></a>
+                            <a asp-controller="Locales" asp-action="EditarLocal" asp-route-id="@local.Id" class="ms-2 btn" style="background-color: #20BFD6; color: #FFFFFF;"><i class="bi bi-pencil-square"></i></a>
+                            <a asp-controller="Locales" asp-action="EliminarLocal" asp-route-id="@local.Id" class="ms-2 btn btn-outline-danger"><i class="bi bi-trash"></i></a>
                         </div>
                     </div>
                 </div>

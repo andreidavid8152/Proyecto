@@ -9,6 +9,5 @@ namespace Proyecto.Services
         Task<String> Login(LoginViewModel usuario);
         Task<UserInputModel> GetPerfil(string token);
         Task<bool> EditarPerfil(UserInputModel usuario, string token);
-
     }
 }
