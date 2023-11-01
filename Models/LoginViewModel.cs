@@ -5,10 +5,10 @@ namespace Proyecto.Models
     public class LoginViewModel
     {
 
-        [Required(ErrorMessage = "El username es requerido.")]
+        [Required(ErrorMessage = "El username es obligatorio.")]
         public string Username { get; set; }
 
-        [Required(ErrorMessage = "El password es requerido.")]
+        [Required(ErrorMessage = "El password es obligatorio.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 

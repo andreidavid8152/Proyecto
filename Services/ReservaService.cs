@@ -59,5 +59,26 @@ namespace Proyecto.Services
 
         }
 
+        public async Task<bool> ComentarReserva(ComentarioViewModel comentario, string token)
+        {
+            // Añade el token como header de autorización
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            // Realiza la petición HTTP POST
+            var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}Reservas/comentar", comentario);
+
+            // Verifica si la petición fue exitosa
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                throw new Exception(errorMessage);
+            }
+        }
+
+
     }
 }

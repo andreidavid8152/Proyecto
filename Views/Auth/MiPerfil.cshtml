@@ -5,40 +5,43 @@
     Layout = "~/Views/Shared/_LoggedLayout.cshtml";
 }
 
-<h1>MiPerfil</h1>
+<div class="text-center" style="padding: 50px 0;">
 
-<form asp-action="EditarPerfil" class="col-sm-4" method="post">
+    <h1 class="mb-4" style="color: #333;">Mi Perfil</h1>
 
-    <div class="form-group mb-5 mt-4">
-        <label>Nombre</label>
-        <input asp-for="Nombre" class="form-control mt-2 placeholder-black" placeholder="Ingrese un nombre">
-        <span asp-validation-for="Nombre" class="text-danger"></span>
-    </div>
+    <form asp-action="EditarPerfil" class="col-sm-4 mx-auto my-auto" method="post" style="background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
 
-    <div class="form-group mb-5 mt-4">
-        <label>Email</label>
-        <input asp-for="Email" class="form-control mt-2 placeholder-black" placeholder="Ingrese un email">
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
+        <div class="form-group mb-4">
+            <label style="color:#55677D">Nombre</label>
+            <input asp-for="Nombre" class="form-control mt-2" placeholder="Tu nombre aquí">
+            <span asp-validation-for="Nombre" class="text-danger"></span>
+        </div>
 
-    <div class="form-group mb-5 mt-4">
-        <label>Username</label>
-        <input asp-for="Username" class="form-control mt-2 placeholder-black" placeholder="Ingrese un nombre de usuario">
-        <span asp-validation-for="Username" class="text-danger"></span>
-    </div>
+        <div class="form-group mb-4">
+            <label style="color:#55677D">Email</label>
+            <input asp-for="Email" class="form-control mt-2" placeholder="Tu email aquí">
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
 
-    <div class="form-group mb-5">
-        <label>Password</label>
-        <input asp-for="Password" class="form-control mt-2 placeholder-black" placeholder="Ingrese una contraseña">
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
+        <div class="form-group mb-4">
+            <label style="color:#55677D">Nombre de usuario</label>
+            <input asp-for="Username" class="form-control mt-2" placeholder="Tu nombre de usuario aquí">
+            <span asp-validation-for="Username" class="text-danger"></span>
+        </div>
 
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group mb-4">
+            <label style="color:#55677D">Contraseña</label>
+            <input asp-for="Password" class="form-control mt-2" placeholder="Tu contraseña aquí">
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
 
-    <button type="submit" class="btn btn-success">Actualizar</button>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger mb-4" })
 
-</form>
+        <button type="submit" class="btn btn-outline-info w-100">Actualizar</button>
 
+    </form>
+
+</div>
 
 <style>
     .validation-summary-errors ul {

@@ -15,7 +15,6 @@
     </div>
 }
 
-
 <button type="button" class="btn mt-3" style="background-color: #4CAF50; color: white;" onclick="location.href='@Url.Action("Create", "Locales")'">Crear</button>
 
 @if (locales != null && locales.Any())
@@ -23,7 +22,7 @@
     <div class="d-flex flex-wrap justify-content-center">
         @foreach (var local in locales)
         {
-            <div class="card mb-3 mx-2" style="width: 840px;">
+            <div class="card mb-3 mx-2 shadow" style="width: 840px;">
                 <div class="row g-0">
                     <div class="col-md-4">
                         @if (local.Imagenes != null && local.Imagenes.Count > 0)
@@ -39,7 +38,7 @@
                         <div class="card-body">
                             <h5 class="card-title" style="font-weight: bold;">@local.Nombre</h5>
                             <p class="card-text">@local.Descripcion</p>
-                            <a asp-controller="Locales" asp-action="VerDetallesArrendador" asp-route-id="@local.Id" class="ms-1 btn btn-outline-warning"><i class="bi bi-eye-fill"></i></a>
+                            <a asp-controller="Locales" asp-action="VerDetallesArrendador" asp-route-id="@local.Id" class="ms-1 btn btn-outline-info"><i class="bi bi-eye-fill"></i></a>
                             <a asp-controller="Locales" asp-action="EditarLocal" asp-route-id="@local.Id" class="ms-2 btn" style="background-color: #20BFD6; color: #FFFFFF;"><i class="bi bi-pencil-square"></i></a>
                             <a asp-controller="Locales" asp-action="EliminarLocal" asp-route-id="@local.Id" class="ms-2 btn btn-outline-danger"><i class="bi bi-trash"></i></a>
                         </div>

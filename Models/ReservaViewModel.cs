@@ -2,6 +2,7 @@
 {
     public class ReservaViewModel
     {
+        public int Id { get; set; }
 
         public int LocalID { get; set; }
 

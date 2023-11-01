@@ -13,7 +13,7 @@
 
     @foreach (var reserva in reservas)
     {
-        <div class="card mb-3 mx-2" style="width: 840px;">
+        <div class="card mb-3 mx-2 shadow" style="width: 840px;">
             <div class="row g-0">
                 <div class="col-md-4">
                     @if (reserva.Local.Imagenes != null && reserva.Local.Imagenes.Count > 0)
@@ -30,13 +30,43 @@
                         <h5 class="card-title" style="font-weight: bold;">@reserva.Local.Nombre</h5>
                         <p class="card-text"> <b>Fecha: </b>  @reserva.Fecha</p>
                         <p class="card-text"> <b>Horario: </b>  @reserva.Horario.HoraInicio - @reserva.Horario.HoraFin</p>
-                        <a class="btn btn-outline-dark"><i class="bi bi-chat-dots"></i></a>
+                        <a class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#myModal-@reserva.Id"><i class="bi bi-chat-dots"></i></a>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal-@reserva.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Ingresa tu comentario</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form asp-controller="Reservas" asp-action="ComentarReserva" method="POST">
+                                        <div class="modal-body">
+                                            <div class="rating">
+                                                <input type="radio" name="Calificacion" value="5" /><label><i style="color:black" class="bi bi-stars"></i></label>
+                                                <input type="radio" name="Calificacion" value="4" /><label><i style="color:black" class="bi bi-stars"></i></label>
+                                                <input type="radio" name="Calificacion" value="3" /><label><i style="color:black" class="bi bi-stars"></i></label>
+                                                <input type="radio" name="Calificacion" value="2" /><label><i style="color:black" class="bi bi-stars"></i></label>
+                                                <input type="radio" name="Calificacion" value="1" /><label><i style="color:black" class="bi bi-stars"></i></label>
+                                            </div>
+
+                                            <input class="form-control mt-2 placeholder-black" name="Texto" placeholder="Ingrese un comentario">
+                                            <input type="hidden" name="Fecha" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                            <input type="hidden" name="LocalID" value="@reserva.Id" />
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="btn btn-outline-success">Enviar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     }
 </div>
-
-        
     

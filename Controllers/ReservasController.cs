@@ -63,5 +63,46 @@ namespace Proyecto.Controllers
             }
         }
 
+        // Ruta que comenta una reserva.
+        [HttpPost("Comentario")]
+        public async Task<IActionResult> ComentarReserva(ComentarioViewModel comentario)
+        {
+            // Obtiene el token de la sesión.
+            var token = HttpContext.Session.GetString("UserToken");
+
+            // Decodifica el token y obtiene el claim
+            var handler = new JwtSecurityTokenHandler();
+            var tokenS = handler.ReadToken(token) as JwtSecurityToken;
+            var claimUserId = tokenS.Claims.FirstOrDefault(claim => claim.Type == "nameid")?.Value;
+
+            // Agrega el UsuarioID al comentario antes de enviarlo al servicio
+            comentario.UsuarioID = int.Parse(claimUserId);
+
+            // Envía el comentario al servicio y guarda el resultado
+            try
+            {
+                Console.WriteLine(comentario);
+
+                var result = await _reservaService.ComentarReserva(comentario, token);
+
+                if (result)
+                {
+                    return RedirectToAction("Index"); // Redirige al index si todo sale bien
+                }
+                else
+                {
+                    // En caso de que el servicio devuelva false, puedes decidir qué hacer aquí.
+                    ViewBag.ErrorMessage = "No se pudo agregar el comentario.";
+                    return View("Index");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores
+                ViewBag.ErrorMessage = ex.Message;
+                return View("Index");
+            }
+        }
+
     }
 }

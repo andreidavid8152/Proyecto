@@ -30,6 +30,8 @@ namespace Proyecto.Models
         //Relaciones
         public List<HorarioViewModel>? Horarios { get; set; }
         public List<ImagenLocalViewModel>? Imagenes { get; set; }
+        public List<ComentarioViewModel>? Comentarios { get; set; }
+
 
     }
 }

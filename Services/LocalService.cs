@@ -97,8 +97,7 @@ namespace Proyecto.Services
         {
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            // Realiza la petición HTTP PATCH
-            var response = await _httpClient.PatchAsync($"{_baseUrl}Locales/AddHorarios/{localId}",
+            var response = await _httpClient.PostAsync($"{_baseUrl}Locales/AddHorarios/{localId}",
                 new StringContent(JsonConvert.SerializeObject(horarios), Encoding.UTF8, "application/json"));
 
             if (response.IsSuccessStatusCode)
@@ -116,8 +115,7 @@ namespace Proyecto.Services
         {
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            // Realiza la petición HTTP PATCH
-            var response = await _httpClient.PatchAsync($"{_baseUrl}Locales/AddImagenes/{localId}",
+            var response = await _httpClient.PostAsync($"{_baseUrl}Locales/AddImagenes/{localId}",
                 new StringContent(JsonConvert.SerializeObject(imagenes), Encoding.UTF8, "application/json"));
 
             if (response.IsSuccessStatusCode)
