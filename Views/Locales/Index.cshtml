@@ -1,12 +1,11 @@
-﻿@model List<LocalViewModel>
+﻿@model List<Local>
 
 @{
-    ViewData["Title"] = "Mis Locales";
-    Layout = "~/Views/Shared/_LoggedLayout.cshtml";
+    ViewData["Title"] = "Locales";
+    Layout = "~/Views/Shared/_UsuariosLayout.cshtml";
     var locales = Model;
 }
 
-<h1>Mis Locales</h1>
 
 @if (TempData["MensajeError"] != null)
 {
@@ -14,8 +13,6 @@
         @TempData["MensajeError"]
     </div>
 }
-
-<button type="button" class="btn mt-3" style="background-color: #4CAF50; color: white;" onclick="location.href='@Url.Action("Create", "Locales")'">Crear</button>
 
 @if (locales != null && locales.Any())
 {

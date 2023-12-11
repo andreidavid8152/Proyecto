@@ -2,7 +2,7 @@
 
 namespace Proyecto.Models
 {
-    public class LoginViewModel
+    public class Login
     {
 
         [Required(ErrorMessage = "El username es obligatorio.")]

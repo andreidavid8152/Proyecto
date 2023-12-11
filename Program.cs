@@ -20,6 +20,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<ILocalService, LocalService>();
 builder.Services.AddScoped<IReservaService, ReservaService>();
+builder.Services.AddScoped<IComentarioService, ComentarioService>();
 
 // Agregar servicios de sesión aquí
 builder.Services.AddSession();

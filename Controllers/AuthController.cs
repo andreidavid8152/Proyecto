@@ -26,7 +26,7 @@ namespace Proyecto.Controllers
 
         // Ruta que recibe los datos del formulario de inicio de sesión.
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(Login model)
         {
             if (ModelState.IsValid)
             {
@@ -63,7 +63,7 @@ namespace Proyecto.Controllers
 
         // Ruta que recibe los datos del formulario de registro.
         [HttpPost]
-        public async Task<IActionResult> Register(UserInputModel model)
+        public async Task<IActionResult> Register(UserInput model)
         {
             if (ModelState.IsValid)
             {
@@ -107,8 +107,8 @@ namespace Proyecto.Controllers
             }
         }
 
-        // Ruta que recibe los datos del formulario de edición de perfil.
-        public async Task<IActionResult> EditarPerfil(UserInputModel usuarioEditado)
+        // Ruta que recibe los datos del formulario de edición de perfil del administrador.
+        public async Task<IActionResult> EditarPerfilAdmin(UserInput usuarioEditado)
         {
             if (ModelState.IsValid)
             {
@@ -138,7 +138,26 @@ namespace Proyecto.Controllers
 
             // Si el modelo no es válido, simplemente retorna a la vista con los datos del formulario.
             return View("MiPerfil", usuarioEditado);
-        }   
+        }
+
+        // Ruta que recibe los datos del formulario de edición de perfil del usuario.
+        public async Task<IActionResult> EditarPerfilUsuario(UserInput usuarioEditado, int idUsuario)
+        {
+            try
+            {
+                usuarioEditado.Id = idUsuario;
+                var token = HttpContext.Session.GetString("UserToken");
+                var result = await _usuarioService.EditarPerfil(usuarioEditado, token);
+
+                return RedirectToAction("InformacionUsuario", "Home", new { idUsuario = idUsuario });
+            }
+            catch (Exception ex) // Capturas la excepción
+            {
+                TempData["ErrorMessage"] = "Ocurrió un error: " + ex.Message;
+                // Aún rediriges al mismo lugar, pero ahora llevas un mensaje de error
+                return RedirectToAction("InformacionUsuario", "Home", new { idUsuario = idUsuario });
+            }
+        }
 
         // Ruta que cierra la sesión del usuario.
         public async Task<IActionResult> Logout()

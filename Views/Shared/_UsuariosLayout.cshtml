@@ -27,6 +27,18 @@
                     <a class="btn btn-outline-primary me-5" style="color:antiquewhite" asp-controller="Home" asp-action="Dashboard">
                         <i class="bi bi-people"></i> <b>Mis Usuarios</b>
                     </a>
+                    <a id="enlace-informacion" class="btn btn-outline-primary me-5" style="color:antiquewhite" asp-controller="Home" asp-action="InformacionUsuario" asp-route-idUsuario="-1">
+                        <i class="bi bi-info-circle"></i> <b>Informacion</b>
+                    </a>
+                    <a class="btn btn-outline-primary me-5" style="color:antiquewhite" asp-controller="Locales" asp-action="Index">
+                        <i class="bi bi-shop"></i> <b>Locales</b>
+                    </a>
+                    <a class="btn btn-outline-warning ms-5" style="color:ghostwhite" asp-controller="Reservas" asp-action="Index">
+                        <i class="bi bi-calendar-check"></i> <b>Reservas</b>
+                    </a>
+                    <a class="btn btn-outline-warning ms-5" style="color:ghostwhite" asp-controller="Comentarios" asp-action="Index">
+                        <i class="bi bi-chat"></i> <b>Comentarios</b>
+                    </a>
                 </div>
 
 
@@ -52,5 +64,18 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        //Funcion para modificar la url de la pestana informacion
+        window.onload = function () {
+            var idUsuario = localStorage.getItem("IdUsuarioSeleccionado");
+            if (idUsuario) {
+                var enlaceInformacion = document.getElementById("enlace-informacion");
+                enlaceInformacion.href = "/Home/InformacionUsuario?idUsuario=" + idUsuario;
+            }
+        }
+    </script>
+
 </body>
 </html>
+
+

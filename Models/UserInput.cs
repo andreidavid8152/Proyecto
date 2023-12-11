@@ -2,8 +2,10 @@
 
 namespace Proyecto.Models
 {
-    public class UserInputModel
+    public class UserInput
     {
+
+        public int Id { get; set; } 
 
         [Required(ErrorMessage = "El nombre es obligatorio.")]
         public string Nombre { get; set; }

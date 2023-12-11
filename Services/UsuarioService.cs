@@ -25,7 +25,7 @@ namespace Proyecto.Services
             _httpClient = httpClient;
         }
 
-        public async Task<bool> Registro(UserInputModel usuario)
+        public async Task<bool> Registro(UserInput usuario)
         {
             var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}Usuarios", usuario);
             if (response.IsSuccessStatusCode)
@@ -39,7 +39,7 @@ namespace Proyecto.Services
             }
         }
 
-        public async Task<String> Login(LoginViewModel usuario)
+        public async Task<String> Login(Login usuario)
         {
 
             var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}Usuarios/login", usuario);
@@ -59,14 +59,14 @@ namespace Proyecto.Services
 
         }
 
-        public async Task<UserInputModel> GetPerfil(string token)
+        public async Task<UserInput> GetPerfil(string token)
         {
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _httpClient.GetAsync($"{_baseUrl}Usuarios/perfil");
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<UserInputModel>(content);
+                return JsonConvert.DeserializeObject<UserInput>(content);
             }
             else
             {
@@ -75,7 +75,7 @@ namespace Proyecto.Services
             }
         }
 
-        public async Task<bool> EditarPerfil(UserInputModel usuario, string token)
+        public async Task<bool> EditarPerfil(UserInput usuario, string token)
         {
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var jsonContent = new StringContent(JsonConvert.SerializeObject(usuario), Encoding.UTF8, "application/json");
@@ -83,6 +83,38 @@ namespace Proyecto.Services
             if (response.IsSuccessStatusCode)
             {
                 return true;
+            }
+            else
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                throw new Exception(errorMessage);
+            }
+        }
+
+        public async Task<List<UserInput>> GetUsuarios(string token)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.GetAsync($"{_baseUrl}Usuarios/usuarios");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<List<UserInput>>(content);
+            }
+            else
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                throw new Exception(errorMessage);
+            }
+        }
+
+        public async Task<UsuarioViewModel> GetInformacionUsuario(int idUsuario, string token)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.GetAsync($"{_baseUrl}Usuarios/informacionUsuario/{idUsuario}");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<UsuarioViewModel>(content);
             }
             else
             {

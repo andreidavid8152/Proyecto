@@ -1,18 +1,22 @@
-﻿@model List<ImagenLocalViewModel>;
+﻿@model List<ImagenLocal>;
 
 @{
     ViewData["Title"] = "Editar Imagenes";
-    Layout = "~/Views/Shared/_LoggedLayout.cshtml";
+    Layout = "~/Views/Shared/_UsuariosLayout.cshtml";
     var imagenes = Model;
 }
 
 <h1>Editar Imagenes</h1>
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" style="color:white">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
 <div class="text-center">
     <div class="container mt-4">
-        <div class="alert alert-info mt-3" role="alert">
-            <b>Nota:</b> Solo puedes editar tres imágenes.
-        </div>
 
         <form method="POST" asp-action="EditarImagenes">
             <div id="imagenesContainer">

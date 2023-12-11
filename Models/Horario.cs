@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Proyecto.Models
 {
-    public class HorarioViewModel
+    public class Horario
     {
         public int ID { get; set; }
 
@@ -19,7 +19,7 @@ namespace Proyecto.Models
 
         // Relaciones
         [JsonIgnore]
-        public LocalViewModel? Local { get; set; }
+        public Local? Local { get; set; }
     }
 
     // Clase personalizada para validar que la hora de fin es al menos 2 horas después que la hora de inicio

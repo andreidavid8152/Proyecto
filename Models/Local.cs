@@ -2,7 +2,7 @@
 
 namespace Proyecto.Models
 {
-    public class LocalViewModel
+    public class Local
     {
 
         public int Id { get; set; }
@@ -28,9 +28,9 @@ namespace Proyecto.Models
         
 
         //Relaciones
-        public List<HorarioViewModel>? Horarios { get; set; }
-        public List<ImagenLocalViewModel>? Imagenes { get; set; }
-        public List<ComentarioViewModel>? Comentarios { get; set; }
+        public List<Horario>? Horarios { get; set; }
+        public List<ImagenLocal>? Imagenes { get; set; }
+        public List<Comentario>? Comentarios { get; set; }
 
 
     }

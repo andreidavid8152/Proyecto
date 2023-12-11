@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using NuGet.Common;
 using Proyecto.Models;
 using Proyecto.Services;
@@ -8,16 +10,16 @@ using System.Security.Claims;
 
 namespace Proyecto.Controllers
 {
-    // Ruta sobreescrita
-    [Route("MisLocales")]
     public class LocalesController : Controller
     {
 
         private readonly ILocalService _localService;
+        private readonly IUsuarioService _usuarioService;
 
-        public LocalesController(ILocalService localService)
+        public LocalesController(ILocalService localService, IUsuarioService usuarioService)
         {
             _localService = localService;
+            _usuarioService = usuarioService;
         }
 
         // Ruta que muestra los locales creados del cliente
@@ -25,15 +27,34 @@ namespace Proyecto.Controllers
         public async Task<IActionResult> Index()
         {
             var token = HttpContext.Session.GetString("UserToken"); // Obtiene el token de la sesión.
+            // Intenta recuperar la información del usuario de la sesión.
+            var usuarioViewModelString = HttpContext.Session.GetString("InformacionUsuario");
+            UsuarioViewModel usuarioViewModel = null;
+
+            if (!string.IsNullOrEmpty(usuarioViewModelString))
+            {
+                usuarioViewModel = JsonConvert.DeserializeObject<UsuarioViewModel>(usuarioViewModelString);
+                usuarioViewModel = await _usuarioService.GetInformacionUsuario(usuarioViewModel.Id, token);
+
+                //Actualizar viewmodel
+                HttpContext.Session.SetString("InformacionUsuario", JsonConvert.SerializeObject(usuarioViewModel));
+            }
+            else
+            {
+                // Manejar el caso en que no hay información del usuario en la sesión - se redirige al dashboard, por ejemplo.
+                return RedirectToAction("Dashboard");
+            }
 
             try
             {
-                var locales = await _localService.ObtenerLocalesArrendador(token);
+                // Aquí asumimos que 'usuarioViewModel' contiene una propiedad 'Locales' que queremos mostrar.
+                var locales = usuarioViewModel.locales;
+
                 return View(locales); // Pasa los locales a la vista.
             }
             catch (Exception ex)
             {
-                // Puedes manejar el error como prefieras.
+                // Manejo de errores
                 ViewBag.ErrorMessage = ex.Message;
                 return View();
             }
@@ -48,7 +69,7 @@ namespace Proyecto.Controllers
 
         // Ruta que crea un local
         [HttpPost]
-        public async Task<IActionResult> Create(LocalViewModel local)
+        public async Task<IActionResult> Create(Local local)
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +101,7 @@ namespace Proyecto.Controllers
             }
             return View(local);
         }
-        
+
         // Ruta que va a la vista para crear horarios
         [HttpGet("Horarios/{id}")]
         public async Task<IActionResult> CreateHorarios(int id)
@@ -90,7 +111,7 @@ namespace Proyecto.Controllers
 
         // Ruta que crea horarios
         [HttpPost("Horarios/{id}")]
-        public async Task<IActionResult> CreateHorarios(int id, List<HorarioViewModel> horarios)
+        public async Task<IActionResult> CreateHorarios(int id, List<Horario> horarios)
         {
 
             // Iterar a través de la lista de horarios
@@ -140,7 +161,7 @@ namespace Proyecto.Controllers
 
         // Ruta que crea imagenes
         [HttpPost("Imagenes/{id}")]
-        public async Task<IActionResult> CreateImagenes(int id, List<ImagenLocalViewModel> imagenes)
+        public async Task<IActionResult> CreateImagenes(int id, List<ImagenLocal> imagenes)
         {
             var token = HttpContext.Session.GetString("UserToken"); // Obtiene el token de la sesión.
             try
@@ -223,7 +244,7 @@ namespace Proyecto.Controllers
 
         // Ruta que edita un local
         [HttpPost("Editar")]
-        public async Task<IActionResult> EditarLocal(int id, LocalViewModel local)
+        public async Task<IActionResult> EditarLocal(int id, Local local)
         {
 
             if (ModelState.IsValid)
@@ -236,7 +257,7 @@ namespace Proyecto.Controllers
 
                     if (resultado)
                     {
-                        return RedirectToAction("EditarImagenes", new { id = id }); // Si todo sale bien, redirige a otra vista, como el índice.
+                        return RedirectToAction("EditarHorarios", new { id = id }); // Si todo sale bien, redirige a otra vista, como el índice.
                     }
                     else
                     {
@@ -257,16 +278,65 @@ namespace Proyecto.Controllers
         }
 
         // Ruta que va a la vista para editar imagenes
+        [HttpGet("Editar/Horarios")]
+        public async Task<IActionResult> EditarHorarios(int id)
+        {
+            var token = HttpContext.Session.GetString("UserToken"); // Obtiene el token de la sesión.
+            TempData["LocalId"] = id;  // En el método GET
+            try
+            {
+                var horariosLocal = await _localService.ObtenerHorariosLocal(id, token);
+                return View(horariosLocal);
+            }
+            catch (Exception ex)
+            {
+                // Puedes manejar el error como prefieras.
+                ViewBag.ErrorMessage = ex.Message;
+                return View();
+            }
+        }
+
+        // Ruta que edita horarios
+        [HttpPost("Editar/Horarios")]
+        public async Task<IActionResult> EditarHorarios(List<Horario> horarios)
+        {
+            var id = (int)TempData["LocalId"];  // En el método POST
+            var token = HttpContext.Session.GetString("UserToken"); // Obtiene el token de la sesión.
+
+            try
+            {
+                var resultado = await _localService.EditarHorariosLocal(id, horarios, token);
+                return RedirectToAction("EditarImagenes", new { id = id }); // Redirige a otra vista, independientemente del resultado.
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction("EditarImagenes", new { id = id }); // Redirige incluso en caso de excepción.
+            }
+        }
+
+        // Ruta que va a la vista para editar imagenes
         [HttpGet("Editar/Imagenes")]
         public async Task<IActionResult> EditarImagenes(int id)
         {
+            var token = HttpContext.Session.GetString("UserToken"); // Obtiene el token de la sesión.
             TempData["LocalId"] = id;  // En el método GET
-            return View();
+            try
+            {
+                var imagenesLocal = await _localService.ObtenerImagenesLocal(id, token);
+                return View(imagenesLocal);
+            }
+            catch (Exception ex)
+            {
+                // Puedes manejar el error como prefieras.
+                ViewBag.ErrorMessage = ex.Message;
+                return View();
+            }
         }
 
         // Ruta que edita imagenes
         [HttpPost("Editar/Imagenes")]
-        public async Task<IActionResult> EditarImagenes(List<ImagenLocalViewModel> imagenes)
+        public async Task<IActionResult> EditarImagenes(List<ImagenLocal> imagenes)
         {
             var id = (int)TempData["LocalId"];  // En el método POST
             var token = HttpContext.Session.GetString("UserToken"); // Obtiene el token de la sesión.

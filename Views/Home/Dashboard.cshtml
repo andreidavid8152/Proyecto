@@ -1,41 +1,28 @@
-﻿@model List<LocalViewModel>
+﻿@model List<UserInput>
 
 @{
     ViewData["Title"] = "Dashboard";
     Layout = "~/Views/Shared/_LoggedLayout.cshtml";
-    var locales = Model;
+    var usuarios = Model;
 }
 
 <br />
 
 <h1>Dashboard</h1>
 
-<h4 class="text-center mb-4">Descubre los mejores locales cercanos a ti</h4>
+<h4 class="text-center mb-4">Listado de usuarios</h4>
 
-@if (locales != null && locales.Any())
+@if (usuarios != null && usuarios.Any())
 {
     <div class="d-flex flex-wrap justify-content-center">
-        @foreach (var local in locales)
+        @foreach (var usuario in usuarios)
         {
-            <div class="card mb-3 mx-2 shadow" style="width: 840px;">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        @if (local.Imagenes != null && local.Imagenes.Count > 0)
-                        {
-                            <img src="@local.Imagenes[0].Url" class="img-fluid rounded-start" alt="Foto del local">
-                        }
-                        else
-                        {
-                            <img src="rutaImagenPorDefecto.jpg" class="img-fluid rounded-start" alt="Imagen por defecto">
-                        }
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title font-weight-bold">@local.Nombre</h5>
-                            <p class="card-text">@local.Descripcion</p>
-                            <a asp-controller="Locales" asp-action="VerDetallesCliente" asp-route-id="@local.Id" class="btn btn-outline-primary">Ver más...</a>
-                        </div>
-                    </div>
+            <div class="card mb-3 mx-2 shadow" style="width: 340px;">
+                <div class="card-body">
+                    <h5 class="card-title font-weight-bold text-center"><b>@usuario.Username</b></h5> <br>
+                    <p class="card-text"><b>Nombre: </b>@usuario.Nombre</p>
+                    <p class="card-text"><b>Correo: </b>@usuario.Email</p>
+                    <a onclick="guardarIdUsuario(@usuario.Id)" asp-controller="Home" asp-action="InformacionUsuario" asp-route-idUsuario="@usuario.Id" class="btn btn-outline-primary">Ver más...</a>
                 </div>
             </div>
         }
@@ -44,6 +31,14 @@
 else
 {
     <div class="mt-2 text-center">
-        <p>No hay locales para mostrar</p>
+        <p>No hay usuarios para mostrar</p>
     </div>
 }
+
+<script>
+    //Funcion para guardar el id del usuario, ya que sera utilizado en la url de la pestana informacion que esta en el layout de usuarios - ya que desde ese lugar se envia un id -1 
+    // debido a que en el layout no se tiene el id del usuario. 
+    function guardarIdUsuario(idUsuario) {
+        localStorage.setItem("IdUsuarioSeleccionado", idUsuario);
+    }
+</script>

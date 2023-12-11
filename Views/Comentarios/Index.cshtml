@@ -1,0 +1,45 @@
+﻿@model List<Comentario>
+
+@{
+    ViewData["Title"] = "Comentarios";
+    Layout = "~/Views/Shared/_UsuariosLayout.cshtml";
+    var comentarios = Model;
+}
+
+@if (comentarios != null && comentarios.Any())
+{
+    <div class="d-flex mt-4 flex-wrap justify-content-center">
+        @foreach (var comentario in comentarios)
+        {
+            <div class="card mb-3 mx-2 shadow" style="width: 840px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        @if (comentario.Local.Imagenes != null && comentario.Local.Imagenes.Count > 0)
+                        {
+                            <img src="@comentario.Local.Imagenes[0].Url" class="img-fluid rounded-start" alt="Foto del local">
+                        }
+                        else
+                        {
+                            <img src="rutaImagenPorDefecto.jpg" class="img-fluid rounded-start" alt="Imagen por defecto">
+                        }
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-weight: bold;">@comentario.Local.Nombre</h5>
+                            <p class="card-text"> <b>Calificacion: </b>  @comentario.Calificacion</p>
+                            <p class="card-text"> <b>Comentario: </b>  @comentario.Texto</p>
+                            <p class="card-text"> <b>Fecha: </b>  @comentario.Fecha</p>
+                            <a class="btn btn-outline-danger" asp-action="EliminarComentario" asp-route-comentarioId="@comentario.Id" onclick="return confirm('¿Estás seguro de que quieres eliminar este comentario?');"><i class="bi bi-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div>
+        No hay comentarios para mostrar.
+    </div>
+}

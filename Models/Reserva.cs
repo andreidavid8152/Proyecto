@@ -1,6 +1,6 @@
 ﻿namespace Proyecto.Models
 {
-    public class ReservaViewModel
+    public class Reserva
     {
         public int Id { get; set; }
 
@@ -14,8 +14,8 @@
 
 
         //Relaciones
-        public LocalViewModel? Local { get; set; }
-        public HorarioViewModel? Horario { get; set; }
+        public Local? Local { get; set; }
+        public Horario? Horario { get; set; }
 
     }
 }

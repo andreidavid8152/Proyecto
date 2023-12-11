@@ -1,23 +1,19 @@
 ﻿@model List<Horario>;
 
 @{
-    ViewData["Title"] = "Horarios";
-    Layout = "~/Views/Shared/_LoggedLayout.cshtml";
+    ViewData["Title"] = "Editar Horarios";
+    Layout = "~/Views/Shared/_UsuariosLayout.cshtml";
+    var horarios = Model;
 }
 
-<h1>Horarios</h1>
+<h1>Editar horarios</h1>
 
 
 <div class="text-center">
 
     <div class="container mt-4">
-        <div class="alert alert-info mt-3" role="alert">
-            <b>Nota:</b> Los horarios no se pueden modificar una vez guardados.
-        </div>
 
-        <form method="POST" asp-action="CreateHorarios">
-
-            
+        <form method="POST" asp-action="EditarHorarios">
 
             <div id="horariosContainer">
                 <!-- Horario 1 -->
@@ -32,7 +28,7 @@
                     </div>
                     <div class="col-md-2">
                         <label for="fin1">Fin:</label>
-                        <input type="time" asp-for="@Model[0].HoraFin" class="form-control"> 
+                        <input type="time" asp-for="@Model[0].HoraFin" class="form-control">
                         <span asp-validation-for="@Model[0].HoraFin" class="text-danger"></span><br />
                     </div>
                 </div>
@@ -49,7 +45,7 @@
                     </div>
                     <div class="col-md-2">
                         <label for="fin2">Fin:</label>
-                        <input type="time" asp-for="@Model[1].HoraFin" class="form-control"> 
+                        <input type="time" asp-for="@Model[1].HoraFin" class="form-control">
                         <span asp-validation-for="@Model[1].HoraFin" class="text-danger"></span><br />
 
                     </div>
@@ -67,19 +63,32 @@
                     </div>
                     <div class="col-md-2">
                         <label for="fin3">Fin:</label>
-                        <input type="time" asp-for="@Model[2].HoraFin" class="form-control"> 
+                        <input type="time" asp-for="@Model[2].HoraFin" class="form-control">
                         <span asp-validation-for="@Model[2].HoraFin" class="text-danger"></span><br />
+                    </div>
+                </div>
+
+                <!-- Horario 4 -->
+                <div class="row mb-4 justify-content-center">
+                    <div class="col-md-12">
+                        <b> <label for="horario4">Horario 4:</label> </b> <br /> <br />
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inicio4">Inicio:</label>
+                        <input type="time" asp-for="@Model[3].HoraInicio" class="form-control mb-2">
+                        <span asp-validation-for="@Model[3].HoraInicio" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="fin4">Fin:</label>
+                        <input type="time" asp-for="@Model[3].HoraFin" class="form-control">
+                        <span asp-validation-for="@Model[3].HoraFin" class="text-danger"></span><br />
                     </div>
                 </div>
             </div>
 
             <div class="row mt-5 justify-content-center">
 
-                <div class="col-6 col-md-1">
-                    <button type="button" class="btn btn-primary" onclick="anadirHorario()">Añadir</button>
-                </div>
-
-                <div class="col-6 col-md-1">
+                <div class="col-6 col-md-6">
                     <button type="submit" class="btn" style="background-color: #3CAF50; color: #FFFFFF;">Guardar</button>
                 </div>
 
@@ -88,32 +97,3 @@
     </div>
 
 </div>
-
-
-<script>
-    let contadorHorarios = 3;
-
-    function anadirHorario() {
-        contadorHorarios++;
-        const horariosContainer = document.getElementById('horariosContainer');
-        const newRow = document.createElement('div');
-        newRow.classList.add('row', 'mb-4', 'justify-content-center');
-        newRow.innerHTML = `
-                            <div class="col-md-12">
-                                <b><label for="horario${contadorHorarios}">Horario ${contadorHorarios}:</label></b> <br /> <br />
-                            </div>
-                            <div class="col-md-2">
-                                <label for="inicio${contadorHorarios}">Inicio:</label>
-                                <input type="time" name="[${contadorHorarios - 1}].HoraInicio" class="form-control mb-2" id="inicio${contadorHorarios}" placeholder="Inicio">
-                                <span class="text-danger" data-valmsg-for="[${contadorHorarios - 1}].HoraInicio" data-valmsg-replace="true"></span>
-                            </div>
-                            <div class="col-md-2">
-                                <label for="fin${contadorHorarios}">Fin:</label>
-                                <input type="time" name="[${contadorHorarios - 1}].HoraFin" class="form-control" id="fin${contadorHorarios}" placeholder="Fin">
-                                <span class="text-danger" data-valmsg-for="[${contadorHorarios - 1}].HoraFin" data-valmsg-replace="true"></span> <br />
-                            </div>
-                        `;
-        horariosContainer.appendChild(newRow);
-    }
-
-</script>

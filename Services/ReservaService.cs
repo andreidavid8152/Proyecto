@@ -23,7 +23,7 @@ namespace Proyecto.Services
             _httpClient = httpClient;
         }
 
-        public async Task<bool> Reservar(ReservaViewModel reserva, string token)
+        public async Task<bool> Reservar(Reserva reserva, string token)
         {
             // Añade el token como header de autorización
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -42,7 +42,7 @@ namespace Proyecto.Services
 
         }
 
-        public async Task<List<ReservaViewModel>> ObtenerReservasCliente(string token)
+        public async Task<List<Reserva>> ObtenerReservasCliente(string token)
         {
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
@@ -51,7 +51,7 @@ namespace Proyecto.Services
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                var reserva = JsonConvert.DeserializeObject<List<ReservaViewModel>>(content);
+                var reserva = JsonConvert.DeserializeObject<List<Reserva>>(content);
                 return reserva;
             }
 
@@ -59,7 +59,7 @@ namespace Proyecto.Services
 
         }
 
-        public async Task<bool> ComentarReserva(ComentarioViewModel comentario, string token)
+        public async Task<bool> ComentarReserva(Comentario comentario, string token)
         {
             // Añade el token como header de autorización
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -79,6 +79,25 @@ namespace Proyecto.Services
             }
         }
 
+        public async Task<bool> EliminarReserva(int id, string token)
+        {
+            // Añade el token como header de autorización
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            // Realiza la petición HTTP DELETE
+            var response = await _httpClient.DeleteAsync($"{_baseUrl}Reservas/{id}");
+
+            // Verifica si la petición fue exitosa
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                throw new Exception(errorMessage);
+            }
+        }
 
     }
 }
